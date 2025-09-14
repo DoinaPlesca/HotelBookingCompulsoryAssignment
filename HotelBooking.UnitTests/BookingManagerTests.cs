@@ -25,30 +25,40 @@ namespace HotelBooking.UnitTests
         [Fact]
         public async Task FindAvailableRoom_StartDateNotInTheFuture_ThrowsArgumentException()
         {
+            // Arrange
             var date = SystemTime.Now.Date; // today (pinned)
+            // Act
             Task act() => bookingManager.FindAvailableRoom(date, date);
+            // Assert
             await Assert.ThrowsAsync<ArgumentException>(act);
         }
 
         [Fact]
         public async Task FindAvailableRoom_RoomAvailable_RoomIdNotMinusOne()
         {
+            // Arrange
             var date = SystemTime.Now.Date.AddDays(1);
+            // Act
             int roomId = await bookingManager.FindAvailableRoom(date, date);
+            // Assert
             Assert.NotEqual(-1, roomId);
         }
 
         [Fact]
         public async Task FindAvailableRoom_RoomAvailable_ReturnsAvailableRoom()
         {
-            var date = SystemTime.Now.Date.AddDays(1);
+            // This test was added to satisfy the following test design
+            // principle: "Tests should have strong assertions".
 
+            // Arrange
+            var date = SystemTime.Now.Date.AddDays(1);
+            // Act
             int roomId = await bookingManager.FindAvailableRoom(date, date);
 
             var bookingForReturnedRoomId = (await bookingRepository.GetAllAsync()).Where(b =>
                 b.RoomId == roomId && b.StartDate <= date && b.EndDate >= date && b.IsActive
             );
-
+            // Assert
             Assert.Empty(bookingForReturnedRoomId);
         }
     }
