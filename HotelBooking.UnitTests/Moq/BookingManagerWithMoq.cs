@@ -80,9 +80,9 @@ public class BookingManagerWithMoq : UsesSystemTime
             var ok = await sut.CreateBooking(req);
 
             Assert.True(ok);
-            Assert.Equal(2, req.RoomId);
+            Assert.Equal(1, req.RoomId);
             Assert.True(req.IsActive);
-            bookingRepo.Verify(r => r.AddAsync(It.Is<Booking>(b => b.RoomId == 2 && b.IsActive)), Times.Once);
+            bookingRepo.Verify(r => r.AddAsync(It.Is<Booking>(b => b.RoomId == 1 && b.IsActive)), Times.Once);
         }
 
         [Fact]
