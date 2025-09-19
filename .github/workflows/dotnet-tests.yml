@@ -3,7 +3,7 @@ name: .NET Test Pipeline
 on:
   push:
     branches:
-      - balint-pipeline
+      - main
 
 jobs:
   test:
