@@ -27,11 +27,14 @@ public class FakeBookingManagerDataDrivenTests : UsesSystemTime
     [MemberData(nameof(OverlapShapes))]
     public async Task FindAvailableRoom_OverlapShapes_ReturnsMinusOne(int from, int to, string _case)
     {
+        //Arrange; sut= System under test
         var sut = new BookingManager(
             new FakeBookingRepository(FullyStart, FullyEnd),
             new FakeRoomRepository());
-
+ 
+        //Act
         var roomId = await sut.FindAvailableRoom(D(from), D(to));
+       
         Assert.Equal(-1, roomId);
     }
 
