@@ -26,3 +26,31 @@ jobs:
 
       - name: Run tests
         run: dotnet test --no-build --configuration Release
+  
+  postman-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup .Net
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+
+      - name: Run dotnet Restore
+        run: dotnet restore
+
+      - name: Build WebApi
+        run: dotnet build ./HotelBooking.WebApi/HotelBooking.WebApi/HotelBooking.WebApi.csproj --configuration Release
+
+      - name: Start WebApi
+        run: dotnet run --project ./HotelBooking.WebApi/HotelBooking.WebApi/HotelBooking.WebApi.csproj &
+
+      - name: Install Newman
+        run: npm i -g newman
+
+      - name: Run Postman Tests
+        run: newman run ./Postman/SoftwareQuality.postman_collection.json -e ./Postman/SoftwareQuality.postman_environment.json
+
