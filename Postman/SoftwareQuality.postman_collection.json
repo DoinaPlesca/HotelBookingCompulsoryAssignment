@@ -1,0 +1,448 @@
+{
+	"info": {
+		"_postman_id": "16d4b4b9-b964-40e5-853d-d1c97ff4bf82",
+		"name": "Software Quality",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29117284"
+	},
+	"item": [
+		{
+			"name": "Bookings",
+			"item": [
+				{
+					"name": "Get all bookings",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
+									"\r",
+									"pm.test(\"Response is an array\", () => {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"array\");\r",
+									"    pm.expect(jsonData.length).to.be.above(0);\r",
+									"});\r",
+									"\r",
+									"const bookings = pm.response.json();\r",
+									"const firstId = bookings[0].id;\r",
+									"pm.collectionVariables.set(\"bookingId\", firstId);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{development_address}}/bookings",
+							"host": [
+								"{{development_address}}"
+							],
+							"path": [
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get booking by ID",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is a booking object\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData).to.have.property(\"id\");\r",
+									"    pm.expect(jsonData).to.have.property(\"startDate\");\r",
+									"    pm.expect(jsonData).to.have.property(\"endDate\");\r",
+									"    pm.expect(jsonData).to.have.property(\"customerId\");\r",
+									"    pm.expect(jsonData).to.have.property(\"roomId\");\r",
+									"    pm.expect(jsonData).to.have.property(\"customer\");\r",
+									"    pm.expect(jsonData).to.have.property(\"room\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response id matches requested id\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const expectedId = parseInt(pm.collectionVariables.get(\"bookingId\"));\r",
+									"    pm.expect(jsonData.id).to.eql(expectedId);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{development_address}}/bookings/{{bookingId}}",
+							"host": [
+								"{{development_address}}"
+							],
+							"path": [
+								"bookings",
+								"{{bookingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 201 (Created) or 409 (Conflict)\", () => {\r",
+									"    pm.expect([201, 409]).to.include(pm.response.code);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"startDate\": \"2025-11-01T00:00:00\",\r\n  \"endDate\": \"2025-11-05T00:00:00\",\r\n  \"isActive\": true,\r\n  \"customerId\": 1,\r\n  \"roomId\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{development_address}}/bookings",
+							"host": [
+								"{{development_address}}"
+							],
+							"path": [
+								"bookings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 204 (No Content)\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": {{bookingId}},\r\n  \"isActive\": false,\r\n  \"customerId\": 1\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{development_address}}/bookings/{{bookingId}}",
+							"host": [
+								"{{development_address}}"
+							],
+							"path": [
+								"bookings",
+								"{{bookingId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete booking",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 204 (No Content) or 404 (Not Found)\", () => {\r",
+									"    pm.expect([204, 404]).to.include(pm.response.code);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{development_address}}/bookings/5",
+							"host": [
+								"{{development_address}}"
+							],
+							"path": [
+								"bookings",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customers",
+			"item": [
+				{
+					"name": "Get all customers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Customers loaded\", () => {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    const customers = pm.response.json();\r",
+									"    pm.expect(customers).to.be.an(\"array\");\r",
+									"    // pm.collectionVariables.set(\"customerId\", customers[0].id); - for later use if it gets developed more\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{development_address}}/customers",
+							"host": [
+								"{{development_address}}"
+							],
+							"path": [
+								"customers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rooms",
+			"item": [
+				{
+					"name": "Get all rooms",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 200\", () => pm.response.to.have.status(200));\r",
+									"\r",
+									"pm.test(\"Response is an array\", () => {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"array\");\r",
+									"    pm.expect(jsonData.length).to.be.above(0);\r",
+									"});\r",
+									"\r",
+									"const bookings = pm.response.json();\r",
+									"const firstId = bookings[0].id;\r",
+									"pm.collectionVariables.set(\"roomId\", firstId);\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{development_address}}/rooms",
+							"host": [
+								"{{development_address}}"
+							],
+							"path": [
+								"rooms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get room by ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is a room object\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an(\"object\");\r",
+									"    pm.expect(jsonData).to.have.property(\"id\");\r",
+									"    pm.expect(jsonData).to.have.property(\"description\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response id matches requested id\", function () {\r",
+									"    const jsonData = pm.response.json();\r",
+									"    const expectedId = parseInt(pm.collectionVariables.get(\"roomId\"));\r",
+									"    pm.expect(jsonData.id).to.eql(expectedId);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{development_address}}/rooms/{{roomId}}",
+							"host": [
+								"{{development_address}}"
+							],
+							"path": [
+								"rooms",
+								"{{roomId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create room",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Room created (201)\", () => pm.response.to.have.status(201));\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"description\": \"Room 101 - Deluxe Suite\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{development_address}}/rooms",
+							"host": [
+								"{{development_address}}"
+							],
+							"path": [
+								"rooms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete room",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status is 204 (No Content) or 404 (Not Found)\", () => {\r",
+									"    pm.expect([204, 404]).to.include(pm.response.code);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{development_address}}/rooms/4",
+							"host": [
+								"{{development_address}}"
+							],
+							"path": [
+								"rooms",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "customerId",
+			"value": ""
+		},
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "bookingId",
+			"value": ""
+		},
+		{
+			"key": "roomId",
+			"value": ""
+		}
+	]
+}
