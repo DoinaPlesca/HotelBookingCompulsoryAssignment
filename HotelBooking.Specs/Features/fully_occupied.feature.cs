@@ -83,26 +83,26 @@ namespace HotelBooking.Specs.Features
 #line 5
     testRunner.And("a room type \"double\" exists with capacity 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         "guestName",
                         "roomType",
                         "checkIn",
                         "checkOut",
                         "guests"});
-            table5.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         "A",
                         "double",
                         "2025-12-20",
                         "2025-12-22",
                         "2"});
-            table5.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         "B",
                         "double",
                         "2025-12-20",
                         "2025-12-22",
                         "1"});
 #line 6
-    testRunner.And("existing bookings:", ((string)(null)), table5, "And ");
+    testRunner.And("existing bookings:", ((string)(null)), table2, "And ");
 #line hidden
         }
         
@@ -129,17 +129,17 @@ namespace HotelBooking.Specs.Features
 #line 12
     testRunner.When("I query availability for \"double\" from \"2025-12-20\" to \"2025-12-22\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                             "date",
                             "available"});
-                table6.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "2025-12-20",
                             "0"});
-                table6.AddRow(new string[] {
+                table3.AddRow(new string[] {
                             "2025-12-21",
                             "0"});
 #line 13
-    testRunner.Then("the availability response should show:", ((string)(null)), table6, "Then ");
+    testRunner.Then("the availability response should show:", ((string)(null)), table3, "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
