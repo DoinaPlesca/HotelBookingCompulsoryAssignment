@@ -131,7 +131,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"startDate\": \"2025-11-01T00:00:00\",\r\n  \"endDate\": \"2025-11-05T00:00:00\",\r\n  \"isActive\": true,\r\n  \"customerId\": 1,\r\n  \"roomId\": 1\r\n}\r\n",
+							"raw": "{\r\n  \"startDate\": \"2025-11-12\",\r\n  \"endDate\": \"2025-11-14\",\r\n  \"isActive\": true,\r\n  \"customerId\": 1,\r\n  \"roomId\": 1\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
