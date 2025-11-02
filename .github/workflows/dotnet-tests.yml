@@ -43,10 +43,10 @@ jobs:
         run: dotnet restore
 
       - name: Build Web API
-        run: dotnet build ./HotelBooking.WebApi/HotelBooking.WebApi/HotelBooking.WebApi.csproj --configuration Release
+        run: dotnet build ./HotelBooking.WebApi/HotelBooking.WebApi.csproj --configuration Release
 
       - name: Publish Web API
-        run: dotnet publish ./HotelBooking.WebApi/HotelBooking.WebApi/HotelBooking.WebApi.csproj -c Release -o ./publish
+        run: dotnet publish ./HotelBooking.WebApi/HotelBooking.WebApi.csproj -c Release -o ./publish
 
       - name: Start Web API
         run: |
