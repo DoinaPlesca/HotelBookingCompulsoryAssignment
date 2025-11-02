@@ -48,7 +48,9 @@ jobs:
       - name: Publish Web API
         run: dotnet publish ./HotelBooking.WebApi/HotelBooking.WebApi.csproj -c Release -o ./publish
 
-      - name: Start Web API
+      - name: Start Web API (Development mode for seeding)
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
         run: |
           dotnet ./publish/HotelBooking.WebApi.dll --urls "http://localhost:5000" &
           sleep 10
