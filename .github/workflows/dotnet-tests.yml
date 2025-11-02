@@ -6,7 +6,7 @@ on:
       - postman-tests
 
 jobs:
-  test:
+  unit-tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,30 +27,34 @@ jobs:
       - name: Run tests
         run: dotnet test --no-build --configuration Release
   
-  postman-test:
+  postman-tests:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup .Net
+      - name: Set up .NET 9 SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: '9.0.x'
 
-      - name: Run dotnet Restore
+      - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build WebApi
+      - name: Build Web API
         run: dotnet build ./HotelBooking.WebApi/HotelBooking.WebApi/HotelBooking.WebApi.csproj --configuration Release
 
-      - name: Start WebApi
-        run: dotnet run --project ./HotelBooking.WebApi/HotelBooking.WebApi/HotelBooking.WebApi.csproj &
+      - name: Publish Web API
+        run: dotnet publish ./HotelBooking.WebApi/HotelBooking.WebApi/HotelBooking.WebApi.csproj -c Release -o ./publish
+
+      - name: Start Web API
+        run: |
+          dotnet ./publish/HotelBooking.WebApi.dll --urls "http://localhost:5000" &
+          sleep 10
 
       - name: Install Newman
-        run: npm i -g newman
+        run: npm install -g newman
 
       - name: Run Postman Tests
         run: newman run ./Postman/SoftwareQuality.postman_collection.json -e ./Postman/SoftwareQuality.postman_environment.json
-
