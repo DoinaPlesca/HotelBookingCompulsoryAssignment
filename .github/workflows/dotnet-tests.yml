@@ -3,7 +3,7 @@ name: .NET Test Pipeline
 on:
   push:
     branches:
-      - main
+      - postman-tests
 
 jobs:
   unit-tests:
@@ -25,6 +25,8 @@ jobs:
         run: dotnet build --no-restore --configuration Release
 
       - name: Run tests
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
         run: dotnet test --no-build --configuration Release
   
   postman-tests:
